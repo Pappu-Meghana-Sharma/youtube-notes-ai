@@ -1,7 +1,7 @@
 import streamlit as st
 import re
 from utils.transcript import get_transcript, chunk_transcript
-from utils.generator import generate_notes, generate_flashcards, generate_quiz, generate_summary
+from utils.generator import generate_notes, generate_flashcards, generate_quiz, generate_summary, generate_chat_response
 
 def parse_flashcards(flashcards_text):
     cards = re.split(r'(?=\*\*Q:\*\*)', flashcards_text)
@@ -60,6 +60,26 @@ def parse_quiz(quiz_text):
                 "answer": correct_answer
             })
     return parsed
+
+def format_transcript_with_timestamps(raw_transcript):
+    if not raw_transcript:
+        return ""
+    formatted_lines = []
+    for entry in raw_transcript:
+        if not isinstance(entry, dict):
+            continue
+        start_seconds = int(entry.get('start', 0))
+        hours = start_seconds // 3600
+        minutes = (start_seconds % 3600) // 60
+        seconds = start_seconds % 60
+        
+        if hours > 0:
+            timestamp_str = f"[{hours:02d}:{minutes:02d}:{seconds:02d}]"
+        else:
+            timestamp_str = f"[{minutes:02d}:{seconds:02d}]"
+            
+        formatted_lines.append(f"{timestamp_str} {entry.get('text', '')}")
+    return "\n".join(formatted_lines)
 
 # --- Page Config ---
 st.set_page_config(
@@ -347,14 +367,19 @@ if "transcript" not in st.session_state:
     st.session_state.transcript = None
 if "video_id" not in st.session_state:
     st.session_state.video_id = None
+if "raw_transcript" not in st.session_state:
+    st.session_state.raw_transcript = None
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
 # --- Generation Logic ---
 if generate_btn and url:
     with st.spinner("Fetching transcript..."):
         try:
-            transcript, video_id = get_transcript(url)
+            transcript, video_id, raw_transcript = get_transcript(url)
             st.session_state.transcript = transcript
             st.session_state.video_id = video_id
+            st.session_state.raw_transcript = raw_transcript
         except ValueError as e:
             st.error(str(e))
             st.stop()
@@ -372,6 +397,7 @@ if generate_btn and url:
     st.session_state.results = results
     st.session_state.quiz_answers = {}
     st.session_state.quiz_submitted = False
+    st.session_state.chat_history = []
     st.rerun()
 
 elif generate_btn and not url:
@@ -430,7 +456,7 @@ if st.session_state.results:
         st.markdown('</div>', unsafe_allow_html=True)
 
     with right:
-        tab1, tab2, tab3 = st.tabs(["📋  Notes", "🃏  Flashcards", "📝  Quiz"])
+        tab1, tab2, tab3, tab4 = st.tabs(["📋  Notes", "🃏  Flashcards", "📝  Quiz", "💬  Ask AI"])
 
         with tab1:
             st.markdown('<div class="tab-content">', unsafe_allow_html=True)
@@ -555,6 +581,43 @@ if st.session_state.results:
                             st.session_state.quiz_answers = {}
                             st.session_state.quiz_submitted = False
                             st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        with tab4:
+            st.markdown('<div class="tab-content">', unsafe_allow_html=True)
+            st.markdown("### 💬 Ask Questions About the Video")
+            st.markdown("Ask anything about this lecture. The AI will answer and point you to relevant sections of the video with clickable timestamps.")
+            
+            chat_container = st.container()
+            with chat_container:
+                for msg in st.session_state.chat_history:
+                    with st.chat_message(msg["role"]):
+                        st.markdown(msg["content"])
+            
+            if user_query := st.chat_input("Ask a question about the video..."):
+                with chat_container:
+                    with st.chat_message("user"):
+                        st.markdown(user_query)
+                
+                st.session_state.chat_history.append({"role": "user", "content": user_query})
+                
+                with chat_container:
+                    with st.chat_message("assistant"):
+                        with st.spinner("Analyzing transcript..."):
+                            try:
+                                ts_transcript = format_transcript_with_timestamps(st.session_state.raw_transcript)
+                                response = generate_chat_response(
+                                    prompt=user_query,
+                                    chat_history=st.session_state.chat_history[:-1],
+                                    timestamped_transcript=ts_transcript,
+                                    video_id=st.session_state.video_id
+                                )
+                                st.markdown(response)
+                                st.session_state.chat_history.append({"role": "assistant", "content": response})
+                            except Exception as e:
+                                st.error(f"Error generating response: {str(e)}")
+                
+                st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
 
     # Raw transcript expander

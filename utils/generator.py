@@ -73,3 +73,41 @@ Transcript:
 {transcript[:6000]}
 """
     return _generate(prompt)
+
+def generate_chat_response(prompt: str, chat_history: list, timestamped_transcript: str, video_id: str) -> str:
+    system_instruction = f"""
+You are an expert learning assistant for LectureAI. Your job is to answer questions about the video lecture provided.
+You are given the full transcript of the video with timestamps. 
+
+When the user asks where a topic is discussed, or when you refer to specific parts of the video, you MUST provide the timestamp in brackets, e.g. [02:15] or [01:10:45].
+In addition, make these timestamps clickable links that open the video at that exact second.
+The format of the link MUST be: [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS).
+For example: [02:15](https://youtu.be/{video_id}?t=135) or [01:10:45](https://youtu.be/{video_id}?t=4245).
+Calculate the seconds accurately from the timestamp (e.g., 2 minutes and 15 seconds is 135 seconds).
+
+Be helpful, concise, and educational. Keep your tone encouraging and professional.
+
+Timestamped Transcript:
+{timestamped_transcript[:120000]}
+"""
+
+    contents = []
+    for msg in chat_history:
+        contents.append({
+            "role": "user" if msg["role"] == "user" else "model",
+            "parts": [{"text": msg["content"]}]
+        })
+        
+    contents.append({
+        "role": "user",
+        "parts": [{"text": prompt}]
+    })
+    
+    response = client.models.generate_content(
+        model=MODEL,
+        contents=contents,
+        config={
+            "system_instruction": system_instruction
+        }
+    )
+    return response.text
