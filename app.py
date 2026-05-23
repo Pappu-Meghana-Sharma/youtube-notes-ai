@@ -66,9 +66,15 @@ def format_transcript_with_timestamps(raw_transcript):
         return ""
     formatted_lines = []
     for entry in raw_transcript:
-        if not isinstance(entry, dict):
+        if hasattr(entry, 'get'):
+            start_seconds = int(entry.get('start', 0))
+            text = entry.get('text', '')
+        elif hasattr(entry, 'start') and hasattr(entry, 'text'):
+            start_seconds = int(entry.start)
+            text = entry.text
+        else:
             continue
-        start_seconds = int(entry.get('start', 0))
+            
         hours = start_seconds // 3600
         minutes = (start_seconds % 3600) // 60
         seconds = start_seconds % 60
@@ -78,7 +84,7 @@ def format_transcript_with_timestamps(raw_transcript):
         else:
             timestamp_str = f"[{minutes:02d}:{seconds:02d}]"
             
-        formatted_lines.append(f"{timestamp_str} {entry.get('text', '')}")
+        formatted_lines.append(f"{timestamp_str} {text}")
     return "\n".join(formatted_lines)
 
 # --- Page Config ---
