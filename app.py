@@ -89,7 +89,7 @@ def format_transcript_with_timestamps(raw_transcript):
 
 # --- Page Config ---
 st.set_page_config(
-    page_title="LectureAI",
+    page_title="LectureLens",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -381,7 +381,7 @@ st.markdown("""
 
 
 # --- Hero Section ---
-st.markdown('<div class="hero-title">LectureAI</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-title">LectureLens</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="hero-sub">Drop a YouTube lecture. Walk away with notes, flashcards, and a quiz.</div>',
     unsafe_allow_html=True
@@ -429,11 +429,12 @@ if generate_btn and url:
             st.error(str(e))
             st.stop()
 
+    ts_transcript = format_transcript_with_timestamps(raw_transcript)
     results = {}
     progress = st.progress(0, text="Generating summary...")
-    results["summary"] = generate_summary(transcript)
+    results["summary"] = generate_summary(ts_transcript, video_id)
     progress.progress(50, text="Writing notes...")
-    results["notes"] = generate_notes(transcript)
+    results["notes"] = generate_notes(ts_transcript, video_id)
     results["flashcards"] = None
     results["quiz"] = None
     results["interview"] = None
@@ -556,7 +557,8 @@ if st.session_state.results:
                     if st.button("✦ Generate Flashcards", key="trigger_flashcards_btn", type="primary"):
                         with st.spinner("Creating flashcards..."):
                             try:
-                                flashcards_res = generate_flashcards(transcript)
+                                ts_transcript = format_transcript_with_timestamps(st.session_state.raw_transcript)
+                                flashcards_res = generate_flashcards(ts_transcript, st.session_state.video_id)
                                 st.session_state.results["flashcards"] = flashcards_res
                                 st.rerun()
                             except Exception as e:
@@ -608,7 +610,8 @@ if st.session_state.results:
                     if st.button("✦ Generate Quiz", key="trigger_quiz_btn", type="primary"):
                         with st.spinner("Building quiz..."):
                             try:
-                                quiz_res = generate_quiz(transcript)
+                                ts_transcript = format_transcript_with_timestamps(st.session_state.raw_transcript)
+                                quiz_res = generate_quiz(ts_transcript, st.session_state.video_id)
                                 st.session_state.results["quiz"] = quiz_res
                                 st.rerun()
                             except Exception as e:
@@ -755,7 +758,8 @@ if st.session_state.results:
                         with st.spinner("Generating interview questions..."):
                             try:
                                 from utils.generator import generate_interview_questions
-                                interview_res = generate_interview_questions(transcript)
+                                ts_transcript = format_transcript_with_timestamps(st.session_state.raw_transcript)
+                                interview_res = generate_interview_questions(ts_transcript, st.session_state.video_id)
                                 st.session_state.results["interview"] = interview_res
                                 st.rerun()
                             except Exception as e:
