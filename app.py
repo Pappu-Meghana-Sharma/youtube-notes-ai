@@ -431,16 +431,10 @@ if generate_btn and url:
 
     ts_transcript = format_transcript_with_timestamps(raw_transcript)
     results = {}
-    progress = st.progress(0, text="Generating summary and notes in parallel...")
-    
-    from concurrent.futures import ThreadPoolExecutor
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        future_summary = executor.submit(generate_summary, ts_transcript, video_id)
-        future_notes = executor.submit(generate_notes, transcript, video_id)
-        
-        results["summary"] = future_summary.result()
-        results["notes"] = future_notes.result()
-        
+    progress = st.progress(0, text="Generating summary...")
+    results["summary"] = generate_summary(ts_transcript, video_id)
+    progress.progress(50, text="Writing notes...")
+    results["notes"] = generate_notes(transcript, video_id)
     results["flashcards"] = None
     results["quiz"] = None
     results["interview"] = None
