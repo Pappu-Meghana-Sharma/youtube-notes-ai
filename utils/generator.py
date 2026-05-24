@@ -18,13 +18,10 @@ def generate_notes(transcript: str, video_id: str) -> str:
     prompt = f"""
 You are an expert at converting lecture transcripts into clean, structured, and highly detailed study notes for LectureLens.
 
-Given the timestamped transcript below:
+Given the transcript below:
 1. Generate topic-wise notes with clear, informative headings.
 2. Under each topic, provide detailed explanations of the techniques, concepts, or advice discussed.
-3. For every key point, technique, or major insight, include the exact timestamp referencing when it was discussed in the video.
-4. Format these timestamps as clickable YouTube links using the exact syntax: [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS).
-   Example: "...implement binary search 5-10 times ([10:47](https://youtu.be/{video_id}?t=647)) to build muscle memory."
-   Calculate the total seconds accurately from the timestamp.
+3. Do NOT include any timestamps, bracketed times, or YouTube links. Keep the notes clean, clean-formatted, and easy to read or download.
 
 Strict Grounding Rules:
 - Rely strictly and only on the information explicitly stated by the speaker in the provided video transcript.
