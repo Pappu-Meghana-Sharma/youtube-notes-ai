@@ -98,19 +98,19 @@ st.set_page_config(
 # --- Custom CSS ---
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
     html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Outfit', sans-serif;
     }
 
     .stApp {
-        background: #0f0f13;
-        color: #e8e8e8;
+        background: radial-gradient(circle at 50% 30%, #171530 0%, #060511 100%) !important;
+        color: #e2e8f0;
     }
 
     .hero-title {
-        font-size: 3.2rem;
+        font-size: 3.6rem;
         font-weight: 700;
         background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
         -webkit-background-clip: text;
@@ -119,51 +119,67 @@ st.markdown("""
         text-align: center;
         margin-bottom: 0.2rem;
         line-height: 1.2;
+        letter-spacing: -0.02em;
     }
 
     .hero-sub {
         text-align: center;
-        color: #6b7280;
-        font-size: 1.05rem;
+        color: #94a3b8;
+        font-size: 1.1rem;
         margin-bottom: 2.5rem;
         font-weight: 300;
     }
 
     .card {
-        background: #16161f;
-        border: 1px solid #2a2a3a;
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
+        background: rgba(26, 26, 42, 0.45) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 24px !important;
+        padding: 1.8rem !important;
+        margin-bottom: 1.2rem !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
     }
 
     .tab-content {
-        background: #16161f;
-        border: 1px solid #2a2a3a;
-        border-radius: 0 16px 16px 16px;
-        padding: 1.8rem;
-        margin-top: -1px;
+        background: rgba(26, 26, 42, 0.45) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 24px !important;
+        padding: 2rem !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
     }
 
     .metric-card {
-        background: linear-gradient(135deg, #1e1b4b, #1e1e2e);
-        border: 1px solid #3730a3;
-        border-radius: 12px;
-        padding: 1rem 1.2rem;
+        background: rgba(26, 26, 42, 0.35) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 20px !important;
+        padding: 1.2rem 1.5rem !important;
         text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(167, 139, 250, 0.3) !important;
+        box-shadow: 0 12px 30px rgba(124, 58, 237, 0.18) !important;
     }
 
     .metric-number {
-        font-size: 2rem;
+        font-size: 2.2rem;
         font-weight: 700;
         color: #a78bfa;
     }
 
     .metric-label {
-        font-size: 0.75rem;
-        color: #6b7280;
+        font-size: 0.78rem;
+        color: #94a3b8;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
     }
 
     /* --- 3D Flashcard Flipping --- */
@@ -195,24 +211,24 @@ st.markdown("""
         height: 100%;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-        border-radius: 16px;
+        border-radius: 20px;
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     }
 
     .flip-card-front {
-        background: linear-gradient(135deg, #1e1b4b, #111827);
-        border: 1px solid #4f46e5;
-        color: #e8e8e8;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.7), rgba(17, 24, 39, 0.7));
+        border: 1px solid rgba(79, 70, 229, 0.4);
+        color: #e2e8f0;
     }
 
     .flip-card-back {
-        background: linear-gradient(135deg, #065f46, #111827);
-        border: 1px solid #059669;
+        background: linear-gradient(135deg, rgba(6, 95, 70, 0.7), rgba(17, 24, 39, 0.7));
+        border: 1px solid rgba(5, 150, 105, 0.4);
         color: #ffffff;
         transform: rotateY(180deg);
     }
@@ -228,26 +244,26 @@ st.markdown("""
 
     .flip-card-front .card-badge {
         background: rgba(99, 102, 241, 0.2);
-        color: #a5b4fc;
+        color: #c7d2fe;
         border: 1px solid rgba(99, 102, 241, 0.4);
     }
 
     .flip-card-back .card-badge {
         background: rgba(52, 211, 153, 0.2);
-        color: #34d399;
+        color: #a7f3d0;
         border: 1px solid rgba(52, 211, 153, 0.4);
     }
 
     .card-question {
-        font-size: 1.05rem;
+        font-size: 1.1rem;
         font-weight: 600;
         line-height: 1.4;
         margin: auto 0;
-        color: #e8e8e8;
+        color: #f1f5f9;
     }
 
     .card-answer {
-        font-size: 1.05rem;
+        font-size: 1.1rem;
         font-weight: 500;
         line-height: 1.4;
         margin: auto 0;
@@ -256,61 +272,78 @@ st.markdown("""
 
     .card-hint {
         font-size: 0.7rem;
-        color: #6b7280;
+        color: #94a3b8;
         font-style: italic;
     }
 
+    /* --- Custom Unified Input Bar --- */
     .stTextInput > div > div > input {
-        background: #16161f !important;
-        border: 1px solid #2a2a3a !important;
-        border-radius: 12px !important;
-        color: #e8e8e8 !important;
-        font-size: 0.95rem !important;
-        padding: 0.75rem 1rem !important;
+        background: rgba(30, 30, 48, 0.65) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 30px !important;
+        color: #f1f5f9 !important;
+        font-size: 1rem !important;
+        padding: 0.85rem 1.5rem !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+        transition: all 0.3s ease !important;
     }
 
     .stTextInput > div > div > input:focus {
-        border-color: #a78bfa !important;
-        box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.15) !important;
+        border-color: #7c3aed !important;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25) !important;
     }
 
+    /* --- Custom Button and Segemented Pills --- */
     .stButton > button {
+        border-radius: 30px !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        padding: 0.75rem 1.8rem !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        width: 100% !important;
+    }
+
+    /* Secondary buttons (unselected pills) in columns */
+    div[data-testid="column"] button[kind="secondary"] {
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        color: #94a3b8 !important;
+    }
+
+    div[data-testid="column"] button[kind="secondary"]:hover {
+        background: rgba(124, 58, 237, 0.08) !important;
+        color: #c084fc !important;
+        border-color: rgba(124, 58, 237, 0.3) !important;
+        transform: translateY(-1px);
+    }
+
+    /* Primary buttons (active pills and main generate button) */
+    .stButton button[kind="primary"], div[data-testid="column"] button[kind="primary"] {
         background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
         color: white !important;
         border: none !important;
-        border-radius: 12px !important;
-        padding: 0.6rem 2rem !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-        width: 100% !important;
-        transition: opacity 0.2s !important;
+        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3) !important;
     }
 
-    .stButton > button:hover {
-        opacity: 0.85 !important;
+    .stButton button[kind="primary"]:hover, div[data-testid="column"] button[kind="primary"]:hover {
+        opacity: 0.92 !important;
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45) !important;
+        transform: translateY(-1px);
     }
 
-    .stTabs [data-baseweb="tab-list"] {
-        background: #16161f;
-        border-radius: 12px 12px 0 0;
-        border: 1px solid #2a2a3a;
-        border-bottom: none;
-        gap: 0;
-        padding: 0.3rem 0.3rem 0;
+    /* --- Custom Chat Styling --- */
+    [data-testid="stChatMessage"] {
+        background: rgba(26, 26, 42, 0.3) !important;
+        border: 1px solid rgba(255, 255, 255, 0.04) !important;
+        border-radius: 20px !important;
+        padding: 1rem 1.2rem !important;
+        margin-bottom: 0.8rem !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
     }
-
-    .stTabs [data-baseweb="tab"] {
-        background: transparent;
-        border-radius: 8px 8px 0 0;
-        color: #6b7280;
-        font-weight: 500;
-        padding: 0.6rem 1.4rem;
-    }
-
-    .stTabs [aria-selected="true"] {
-        background: #0f0f13 !important;
-        color: #a78bfa !important;
-        border-bottom: 2px solid #a78bfa !important;
+    
+    [data-testid="stChatMessage"] [data-testid="stChatMessageAvatar"] {
+        background-color: rgba(124, 58, 237, 0.15) !important;
+        border: 1px solid rgba(124, 58, 237, 0.3) !important;
     }
 
     .stSpinner > div {
@@ -319,9 +352,9 @@ st.markdown("""
 
     .status-pill {
         display: inline-block;
-        background: rgba(52, 211, 153, 0.15);
+        background: rgba(52, 211, 153, 0.12);
         color: #34d399;
-        border: 1px solid rgba(52, 211, 153, 0.3);
+        border: 1px solid rgba(52, 211, 153, 0.25);
         border-radius: 20px;
         padding: 0.2rem 0.8rem;
         font-size: 0.78rem;
@@ -329,7 +362,7 @@ st.markdown("""
     }
 
     hr {
-        border-color: #2a2a3a !important;
+        border-color: rgba(255, 255, 255, 0.05) !important;
         margin: 1.5rem 0 !important;
     }
 
@@ -338,9 +371,9 @@ st.markdown("""
     }
 
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0f0f13; }
+    ::-webkit-scrollbar-track { background: #060511; }
     ::-webkit-scrollbar-thumb {
-        background: #2a2a3a;
+        background: rgba(255, 255, 255, 0.08);
         border-radius: 3px;
     }
 </style>
@@ -355,14 +388,18 @@ st.markdown(
 )
 
 # --- Input Section ---
-col1, col2, col3 = st.columns([1, 2, 1])
+col1, col2, col3 = st.columns([1, 2.2, 1])
 with col2:
-    url = st.text_input(
-        "",
-        placeholder="https://www.youtube.com/watch?v=...",
-        label_visibility="collapsed"
-    )
-    generate_btn = st.button("✦ Generate Notes")
+    search_col1, search_col2 = st.columns([3.5, 1.2])
+    with search_col1:
+        url = st.text_input(
+            "",
+            placeholder="Paste YouTube lecture URL here...",
+            label_visibility="collapsed",
+            key="youtube_url_input"
+        )
+    with search_col2:
+        generate_btn = st.button("✦ Generate", key="generate_btn", type="primary")
 
 st.markdown("---")
 
@@ -377,6 +414,8 @@ if "raw_transcript" not in st.session_state:
     st.session_state.raw_transcript = None
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+if "active_tab" not in st.session_state:
+    st.session_state.active_tab = "Notes"
 
 # --- Generation Logic ---
 if generate_btn and url:
@@ -404,6 +443,7 @@ if generate_btn and url:
     st.session_state.quiz_answers = {}
     st.session_state.quiz_submitted = False
     st.session_state.chat_history = []
+    st.session_state.active_tab = "Notes"
     st.rerun()
 
 elif generate_btn and not url:
@@ -462,20 +502,43 @@ if st.session_state.results:
         st.markdown('</div>', unsafe_allow_html=True)
 
     with right:
-        tab1, tab2, tab3, tab4 = st.tabs(["📋  Notes", "🃏  Flashcards", "📝  Quiz", "💬  Ask AI"])
-
-        with tab1:
+        # Segmented Control Pill Row using Columns
+        nav_cols = st.columns(4)
+        tabs_list = [
+            ("Notes", "📋  Notes"),
+            ("Flashcards", "🃏  Flashcards"),
+            ("Quiz", "📝  Quiz"),
+            ("AskAI", "💬  Ask AI")
+        ]
+        
+        for idx, (tab_id, tab_label) in enumerate(tabs_list):
+            with nav_cols[idx]:
+                is_active = (st.session_state.active_tab == tab_id)
+                # Primary styled button for active tab, Secondary for inactive
+                if st.button(
+                    tab_label, 
+                    key=f"nav_btn_{tab_id}", 
+                    type="primary" if is_active else "secondary"
+                ):
+                    st.session_state.active_tab = tab_id
+                    st.rerun()
+                    
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Render contents conditionally based on active_tab
+        if st.session_state.active_tab == "Notes":
             st.markdown('<div class="tab-content">', unsafe_allow_html=True)
             st.markdown(results["notes"])
             st.download_button(
                 "⬇ Download Notes",
                 data=results["notes"],
                 file_name="lecture_notes.md",
-                mime="text/markdown"
+                mime="text/markdown",
+                key="download_notes_btn"
             )
             st.markdown('</div>', unsafe_allow_html=True)
-
-        with tab2:
+            
+        elif st.session_state.active_tab == "Flashcards":
             st.markdown('<div class="tab-content">', unsafe_allow_html=True)
             parsed_cards = parse_flashcards(results["flashcards"])
             if not parsed_cards:
@@ -504,8 +567,8 @@ if st.session_state.results:
                         </div>
                         """, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
-
-        with tab3:
+            
+        elif st.session_state.active_tab == "Quiz":
             st.markdown('<div class="tab-content">', unsafe_allow_html=True)
             if "quiz_answers" not in st.session_state:
                 st.session_state.quiz_answers = {}
@@ -588,8 +651,8 @@ if st.session_state.results:
                             st.session_state.quiz_submitted = False
                             st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
-
-        with tab4:
+            
+        elif st.session_state.active_tab == "AskAI":
             st.markdown('<div class="tab-content">', unsafe_allow_html=True)
             st.markdown("### 💬 Ask Questions About the Video")
             st.markdown("Ask anything about this lecture. The AI will answer and point you to relevant sections of the video with clickable timestamps.")
