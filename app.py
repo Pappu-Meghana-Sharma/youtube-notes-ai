@@ -436,6 +436,7 @@ if generate_btn and url:
     results["notes"] = generate_notes(transcript)
     results["flashcards"] = None
     results["quiz"] = None
+    results["interview"] = None
     progress.progress(100, text="Done!")
     st.session_state.results = results
     st.session_state.quiz_answers = {}
@@ -501,13 +502,14 @@ if st.session_state.results:
 
     with right:
         # Segmented Control Pill Row using Columns
-        nav_cols = st.columns(4)
         tabs_list = [
-            ("Notes", "📋  Notes"),
-            ("Flashcards", "🃏  Flashcards"),
-            ("Quiz", "📝  Quiz"),
-            ("AskAI", "💬  Ask AI")
+            ("Notes", "Notes"),
+            ("Flashcards", "Flashcards"),
+            ("Quiz", "Quiz"),
+            ("AskAI", "Ask AI"),
+            ("Interview", "Interview Prep")
         ]
+        nav_cols = st.columns(len(tabs_list))
         
         for idx, (tab_id, tab_label) in enumerate(tabs_list):
             with nav_cols[idx]:
@@ -730,6 +732,45 @@ if st.session_state.results:
                 
                 st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
+        
+        elif st.session_state.active_tab == "Interview":
+            st.markdown('<div class="tab-content">', unsafe_allow_html=True)
+            if results.get("interview") is None:
+                st.markdown("""
+                <div style="text-align: center; padding: 2rem 0;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    <h3 style="margin-bottom: 0.5rem; color:#ffffff;">Interview Prep</h3>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem; 
+                    max-width: 400px; margin-left: auto; margin-right: auto;">
+                        Generate FAANG-style interview questions based on this lecture's 
+                        topics — with what a strong answer should cover.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+                col1, col2, col3 = st.columns([1.5, 2, 1.5])
+                with col2:
+                    if st.button("✦ Generate Questions", 
+                                key="trigger_interview_btn", 
+                                type="primary"):
+                        with st.spinner("Generating interview questions..."):
+                            try:
+                                from utils.generator import generate_interview_questions
+                                interview_res = generate_interview_questions(transcript)
+                                st.session_state.results["interview"] = interview_res
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Failed to generate: {e}")
+            else:
+                st.markdown(results["interview"])
+                st.download_button(
+                    "⬇ Download Interview Questions",
+                    data=results["interview"],
+                    file_name="interview_prep.md",
+                    mime="text/markdown",
+                    key="download_interview_btn"
+                )
+            st.markdown('</div>', unsafe_allow_html=True)
+        
 
     # Raw transcript expander
     with st.expander("View raw transcript"):
