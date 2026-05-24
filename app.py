@@ -105,14 +105,14 @@ st.markdown("""
     }
 
     .stApp {
-        background: radial-gradient(circle at 50% 30%, #171530 0%, #060511 100%) !important;
+        background: radial-gradient(circle at 50% 30%, #080c14 0%, #030407 100%) !important;
         color: #e2e8f0;
     }
 
     .hero-title {
         font-size: 3.6rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+        background: linear-gradient(135deg, #ffffff, #94a3b8, #10b981);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -131,7 +131,7 @@ st.markdown("""
     }
 
     .card {
-        background: rgba(26, 26, 42, 0.45) !important;
+        background: rgba(22, 22, 35, 0.55) !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -142,7 +142,7 @@ st.markdown("""
     }
 
     .tab-content {
-        background: rgba(26, 26, 42, 0.45) !important;
+        background: rgba(22, 22, 35, 0.55) !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -152,7 +152,7 @@ st.markdown("""
     }
 
     .metric-card {
-        background: rgba(26, 26, 42, 0.35) !important;
+        background: rgba(22, 22, 35, 0.45) !important;
         backdrop-filter: blur(10px) !important;
         -webkit-backdrop-filter: blur(10px) !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -165,14 +165,14 @@ st.markdown("""
 
     .metric-card:hover {
         transform: translateY(-4px);
-        border-color: rgba(167, 139, 250, 0.3) !important;
-        box-shadow: 0 12px 30px rgba(124, 58, 237, 0.18) !important;
+        border-color: rgba(16, 185, 129, 0.3) !important;
+        box-shadow: 0 12px 30px rgba(16, 185, 129, 0.18) !important;
     }
 
     .metric-number {
         font-size: 2.2rem;
         font-weight: 700;
-        color: #a78bfa;
+        color: #10b981;
     }
 
     .metric-label {
@@ -221,8 +221,8 @@ st.markdown("""
     }
 
     .flip-card-front {
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.7), rgba(17, 24, 39, 0.7));
-        border: 1px solid rgba(79, 70, 229, 0.4);
+        background: linear-gradient(135deg, rgba(22, 22, 35, 0.7), rgba(17, 24, 39, 0.7));
+        border: 1px solid rgba(16, 185, 129, 0.3);
         color: #e2e8f0;
     }
 
@@ -243,9 +243,9 @@ st.markdown("""
     }
 
     .flip-card-front .card-badge {
-        background: rgba(99, 102, 241, 0.2);
-        color: #c7d2fe;
-        border: 1px solid rgba(99, 102, 241, 0.4);
+        background: rgba(16, 185, 129, 0.15);
+        color: #a7f3d0;
+        border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
     .flip-card-back .card-badge {
@@ -278,7 +278,7 @@ st.markdown("""
 
     /* --- Custom Unified Input Bar --- */
     .stTextInput > div > div > input {
-        background: rgba(30, 30, 48, 0.65) !important;
+        background: rgba(22, 22, 35, 0.65) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
         border-radius: 30px !important;
         color: #f1f5f9 !important;
@@ -289,8 +289,8 @@ st.markdown("""
     }
 
     .stTextInput > div > div > input:focus {
-        border-color: #7c3aed !important;
-        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25) !important;
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
     }
 
     /* --- Custom Button and Segemented Pills --- */
@@ -311,29 +311,29 @@ st.markdown("""
     }
 
     div[data-testid="column"] button[kind="secondary"]:hover {
-        background: rgba(124, 58, 237, 0.08) !important;
-        color: #c084fc !important;
-        border-color: rgba(124, 58, 237, 0.3) !important;
+        background: rgba(16, 185, 129, 0.08) !important;
+        color: #34d399 !important;
+        border-color: rgba(16, 185, 129, 0.3) !important;
         transform: translateY(-1px);
     }
 
     /* Primary buttons (active pills and main generate button) */
     .stButton button[kind="primary"], div[data-testid="column"] button[kind="primary"] {
-        background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+        background: linear-gradient(135deg, #059669, #10b981) !important;
         color: white !important;
         border: none !important;
-        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3) !important;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
     }
 
     .stButton button[kind="primary"]:hover, div[data-testid="column"] button[kind="primary"]:hover {
         opacity: 0.92 !important;
-        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45) !important;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45) !important;
         transform: translateY(-1px);
     }
 
     /* --- Custom Chat Styling --- */
     [data-testid="stChatMessage"] {
-        background: rgba(26, 26, 42, 0.3) !important;
+        background: rgba(22, 22, 35, 0.3) !important;
         border: 1px solid rgba(255, 255, 255, 0.04) !important;
         border-radius: 20px !important;
         padding: 1rem 1.2rem !important;
@@ -342,12 +342,12 @@ st.markdown("""
     }
     
     [data-testid="stChatMessage"] [data-testid="stChatMessageAvatar"] {
-        background-color: rgba(124, 58, 237, 0.15) !important;
-        border: 1px solid rgba(124, 58, 237, 0.3) !important;
+        background-color: rgba(16, 185, 129, 0.15) !important;
+        border: 1px solid rgba(16, 185, 129, 0.3) !important;
     }
 
     .stSpinner > div {
-        border-top-color: #a78bfa !important;
+        border-top-color: #10b981 !important;
     }
 
     .status-pill {
@@ -367,7 +367,7 @@ st.markdown("""
     }
 
     .stMarkdown h2, .stMarkdown h3 {
-        color: #c4b5fd !important;
+        color: #a7f3d0 !important;
     }
 
     ::-webkit-scrollbar { width: 6px; }
@@ -432,12 +432,10 @@ if generate_btn and url:
     results = {}
     progress = st.progress(0, text="Generating summary...")
     results["summary"] = generate_summary(transcript)
-    progress.progress(25, text="Writing notes...")
+    progress.progress(50, text="Writing notes...")
     results["notes"] = generate_notes(transcript)
-    progress.progress(55, text="Creating flashcards...")
-    results["flashcards"] = generate_flashcards(transcript)
-    progress.progress(80, text="Building quiz...")
-    results["quiz"] = generate_quiz(transcript)
+    results["flashcards"] = None
+    results["quiz"] = None
     progress.progress(100, text="Done!")
     st.session_state.results = results
     st.session_state.quiz_answers = {}
@@ -540,116 +538,160 @@ if st.session_state.results:
             
         elif st.session_state.active_tab == "Flashcards":
             st.markdown('<div class="tab-content">', unsafe_allow_html=True)
-            parsed_cards = parse_flashcards(results["flashcards"])
-            if not parsed_cards:
-                st.warning("Could not parse flashcards. Showing raw output instead:")
-                st.markdown(results["flashcards"])
+            if results.get("flashcards") is None:
+                st.markdown("""
+                <div style="text-align: center; padding: 2rem 0;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🃏</div>
+                    <h3 style="margin-bottom: 0.5rem; color:#ffffff;">Generate Flashcards</h3>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                        Ready to test your memory? Generate 8 interactive 3D flip cards covering the core concepts of this lecture on-demand.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                col1, col2, col3 = st.columns([1.5, 2, 1.5])
+                with col2:
+                    if st.button("✦ Generate Flashcards", key="trigger_flashcards_btn", type="primary"):
+                        with st.spinner("Creating flashcards..."):
+                            try:
+                                flashcards_res = generate_flashcards(transcript)
+                                st.session_state.results["flashcards"] = flashcards_res
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Failed to generate: {e}")
             else:
-                cols = st.columns(2)
-                for idx, card in enumerate(parsed_cards):
-                    col = cols[idx % 2]
-                    with col:
-                        q_escaped = card["question"].replace('"', '&quot;').replace("'", "&#39;")
-                        a_escaped = card["answer"].replace('"', '&quot;').replace("'", "&#39;")
-                        st.markdown(f"""
-                        <div class="flip-card">
-                            <div class="flip-card-inner">
-                                <div class="flip-card-front">
-                                    <span class="card-badge">Question</span>
-                                    <div class="card-question">{q_escaped}</div>
-                                    <span class="card-hint">Hover to reveal answer</span>
-                                </div>
-                                <div class="flip-card-back">
-                                    <span class="card-badge">Answer</span>
-                                    <div class="card-answer">{a_escaped}</div>
+                parsed_cards = parse_flashcards(results["flashcards"])
+                if not parsed_cards:
+                    st.warning("Could not parse flashcards. Showing raw output instead:")
+                    st.markdown(results["flashcards"])
+                else:
+                    cols = st.columns(2)
+                    for idx, card in enumerate(parsed_cards):
+                        col = cols[idx % 2]
+                        with col:
+                            q_escaped = card["question"].replace('"', '&quot;').replace("'", "&#39;")
+                            a_escaped = card["answer"].replace('"', '&quot;').replace("'", "&#39;")
+                            st.markdown(f"""
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span class="card-badge">Question</span>
+                                        <div class="card-question">{q_escaped}</div>
+                                        <span class="card-hint">Hover to reveal answer</span>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <span class="card-badge">Answer</span>
+                                        <div class="card-answer">{a_escaped}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        """, unsafe_allow_html=True)
+                            """, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
         elif st.session_state.active_tab == "Quiz":
             st.markdown('<div class="tab-content">', unsafe_allow_html=True)
-            if "quiz_answers" not in st.session_state:
-                st.session_state.quiz_answers = {}
-            if "quiz_submitted" not in st.session_state:
-                st.session_state.quiz_submitted = False
+            if results.get("quiz") is None:
+                st.markdown("""
+                <div style="text-align: center; padding: 2rem 0;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
+                    <h3 style="margin-bottom: 0.5rem; color:#ffffff;">Generate Quiz</h3>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                        Ready to test your knowledge? Generate a 5-question multiple choice professor's quiz covering this lecture on-demand.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
                 
-            quiz_data = parse_quiz(results["quiz"])
-            if not quiz_data:
-                st.warning("Could not parse quiz questions. Showing raw quiz output:")
-                st.markdown(results["quiz"])
-            else:
-                if st.session_state.quiz_submitted:
-                    correct_count = sum(
-                        1 for idx, q in enumerate(quiz_data)
-                        if st.session_state.quiz_answers.get(idx) == q["answer"]
-                    )
-                    total_count = len(quiz_data)
-                    percentage = (correct_count / total_count) * 100
-                    
-                    if percentage >= 80:
-                        st.success(f"### 🎉 Score: {correct_count} / {total_count} ({percentage:.0f}%) — Excellent Job!")
-                    elif percentage >= 50:
-                        st.info(f"### 👍 Score: {correct_count} / {total_count} ({percentage:.0f}%) — Good Effort!")
-                    else:
-                        st.error(f"### 📚 Score: {correct_count} / {total_count} ({percentage:.0f}%) — Keep Studying!")
-                
-                for idx, q in enumerate(quiz_data):
-                    st.markdown(f"""
-                    <div style="background:#1e1b4b; border:1px solid #3730a3; border-radius:12px; padding:1.2rem; margin-bottom:1rem;">
-                        <span style="color:#a78bfa; font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em;">Question {idx+1}</span>
-                        <div style="font-size:1.05rem; font-weight:600; margin-top:0.4rem; color:#ffffff;">{q["question"]}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    options_list = ["A", "B", "C", "D"]
-                    formatted_options = [f"{letter}) {q['options'][letter]}" for letter in options_list]
-                    
-                    saved_sel = st.session_state.quiz_answers.get(idx)
-                    default_idx = options_list.index(saved_sel) if saved_sel in options_list else None
-                    
-                    selected_val = st.radio(
-                        label=f"Choose option for question {idx+1}",
-                        options=formatted_options,
-                        index=default_idx,
-                        key=f"q_radio_{idx}",
-                        disabled=st.session_state.quiz_submitted,
-                        label_visibility="collapsed"
-                    )
-                    
-                    if selected_val:
-                        selected_letter = selected_val[0]
-                        st.session_state.quiz_answers[idx] = selected_letter
-                        
-                    if st.session_state.quiz_submitted:
-                        user_ans = st.session_state.quiz_answers.get(idx)
-                        correct_ans = q["answer"]
-                        
-                        if user_ans == correct_ans:
-                            st.markdown(f'<p style="color:#34d399; font-weight:600; margin-top:-0.5rem; margin-bottom:1rem;">✓ Correct! Selected: {user_ans}) {q["options"][correct_ans]}</p>', unsafe_allow_html=True)
-                        else:
-                            selected_str = f"{user_ans}) {q['options'].get(user_ans, '')}" if user_ans else "None"
-                            st.markdown(f"""
-                            <p style="color:#f87171; font-weight:600; margin-top:-0.5rem; margin-bottom:0.2rem;">✗ Incorrect! Selected: {selected_str}</p>
-                            <p style="color:#34d399; font-weight:600; margin-bottom:1rem;">✓ Correct Answer: {correct_ans}) {q["options"][correct_ans]}</p>
-                            """, unsafe_allow_html=True)
-                    st.markdown("<hr style='margin: 0.8rem 0 !important;'>", unsafe_allow_html=True)
-                
-                c1, c2 = st.columns([1, 4])
-                with c1:
-                    if not st.session_state.quiz_submitted:
-                        if st.button("Submit Answers", key="submit_quiz_btn"):
-                            if len(st.session_state.quiz_answers) < len(quiz_data):
-                                st.warning("Please answer all questions before submitting.")
-                            else:
-                                st.session_state.quiz_submitted = True
+                col1, col2, col3 = st.columns([1.5, 2, 1.5])
+                with col2:
+                    if st.button("✦ Generate Quiz", key="trigger_quiz_btn", type="primary"):
+                        with st.spinner("Building quiz..."):
+                            try:
+                                quiz_res = generate_quiz(transcript)
+                                st.session_state.results["quiz"] = quiz_res
                                 st.rerun()
-                    else:
-                        if st.button("Retake Quiz", key="retake_quiz_btn"):
-                            st.session_state.quiz_answers = {}
-                            st.session_state.quiz_submitted = False
-                            st.rerun()
+                            except Exception as e:
+                                st.error(f"Failed to generate: {e}")
+            else:
+                if "quiz_answers" not in st.session_state:
+                    st.session_state.quiz_answers = {}
+                if "quiz_submitted" not in st.session_state:
+                    st.session_state.quiz_submitted = False
+                    
+                quiz_data = parse_quiz(results["quiz"])
+                if not quiz_data:
+                    st.warning("Could not parse quiz questions. Showing raw quiz output:")
+                    st.markdown(results["quiz"])
+                else:
+                    if st.session_state.quiz_submitted:
+                        correct_count = sum(
+                            1 for idx, q in enumerate(quiz_data)
+                            if st.session_state.quiz_answers.get(idx) == q["answer"]
+                        )
+                        total_count = len(quiz_data)
+                        percentage = (correct_count / total_count) * 100
+                        
+                        if percentage >= 80:
+                            st.success(f"### 🎉 Score: {correct_count} / {total_count} ({percentage:.0f}%) — Excellent Job!")
+                        elif percentage >= 50:
+                            st.info(f"### 👍 Score: {correct_count} / {total_count} ({percentage:.0f}%) — Good Effort!")
+                        else:
+                            st.error(f"### 📚 Score: {correct_count} / {total_count} ({percentage:.0f}%) — Keep Studying!")
+                    
+                    for idx, q in enumerate(quiz_data):
+                        st.markdown(f"""
+                        <div style="background:rgba(22, 22, 35, 0.4); border:1px solid rgba(16, 185, 129, 0.2); border-radius:16px; padding:1.2rem; margin-bottom:1rem;">
+                            <span style="color:#10b981; font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em;">Question {idx+1}</span>
+                            <div style="font-size:1.05rem; font-weight:600; margin-top:0.4rem; color:#ffffff;">{q["question"]}</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        options_list = ["A", "B", "C", "D"]
+                        formatted_options = [f"{letter}) {q['options'][letter]}" for letter in options_list]
+                        
+                        saved_sel = st.session_state.quiz_answers.get(idx)
+                        default_idx = options_list.index(saved_sel) if saved_sel in options_list else None
+                        
+                        selected_val = st.radio(
+                            label=f"Choose option for question {idx+1}",
+                            options=formatted_options,
+                            index=default_idx,
+                            key=f"q_radio_{idx}",
+                            disabled=st.session_state.quiz_submitted,
+                            label_visibility="collapsed"
+                        )
+                        
+                        if selected_val:
+                            selected_letter = selected_val[0]
+                            st.session_state.quiz_answers[idx] = selected_letter
+                            
+                        if st.session_state.quiz_submitted:
+                            user_ans = st.session_state.quiz_answers.get(idx)
+                            correct_ans = q["answer"]
+                            
+                            if user_ans == correct_ans:
+                                st.markdown(f'<p style="color:#34d399; font-weight:600; margin-top:-0.5rem; margin-bottom:1rem;">✓ Correct! Selected: {user_ans}) {q["options"][correct_ans]}</p>', unsafe_allow_html=True)
+                            else:
+                                selected_str = f"{user_ans}) {q['options'].get(user_ans, '')}" if user_ans else "None"
+                                st.markdown(f"""
+                                <p style="color:#f87171; font-weight:600; margin-top:-0.5rem; margin-bottom:0.2rem;">✗ Incorrect! Selected: {selected_str}</p>
+                                <p style="color:#34d399; font-weight:600; margin-bottom:1rem;">✓ Correct Answer: {correct_ans}) {q["options"][correct_ans]}</p>
+                                """, unsafe_allow_html=True)
+                        st.markdown("<hr style='margin: 0.8rem 0 !important; border-color: rgba(255,255,255,0.03)'>", unsafe_allow_html=True)
+                    
+                    c1, c2 = st.columns([1.2, 4])
+                    with c1:
+                        if not st.session_state.quiz_submitted:
+                            if st.button("Submit Answers", key="submit_quiz_btn"):
+                                if len(st.session_state.quiz_answers) < len(quiz_data):
+                                    st.warning("Please answer all questions before submitting.")
+                                else:
+                                    st.session_state.quiz_submitted = True
+                                    st.rerun()
+                        else:
+                            if st.button("Retake Quiz", key="retake_quiz_btn"):
+                                st.session_state.quiz_answers = {}
+                                st.session_state.quiz_submitted = False
+                                st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
             
         elif st.session_state.active_tab == "AskAI":
