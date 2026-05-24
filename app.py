@@ -90,7 +90,7 @@ def format_transcript_with_timestamps(raw_transcript):
 # --- Page Config ---
 st.set_page_config(
     page_title="LectureLens",
-    page_icon="🎓",
+    page_icon="🔍",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
