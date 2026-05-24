@@ -97,15 +97,18 @@ Transcript:
 
 def generate_interview_questions(transcript: str, video_id: str) -> str:
     prompt = f"""
-You are a technical interviewer for LectureLens. Based on the timestamped lecture transcript below, generate 5 interview questions a FAANG interviewer might ask a candidate who claims to know this topic.
+You are an interviewer/tutor for LectureLens. Based on the timestamped lecture transcript below, generate exactly 5 interview preparation questions and answers.
 
-For each question include:
-- The question itself
-- What a strong answer should cover (2-3 bullet points)
-- Difficulty: Easy / Medium / Hard
-- Lecture Reference: You MUST provide the exact timestamp formatted as a clickable link using the format [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS). Do NOT output plain text timestamps. Every reference must be a link. Example: [09:43](https://youtu.be/{video_id}?t=583)
+Adapt the questions based on the style of the lecture:
+1. If the video is advice-oriented (e.g., how to prepare, study tips, coding grind advice), generate questions focusing on "how to apply these practices to crack technical/FAANG interviews".
+2. If the video is technically or knowledge-oriented (e.g., algorithms, system design, coding concepts), generate conceptual or technical questions about the topics explained in the video.
 
-Format cleanly with markdown. Ensure questions are technically deep and directly tied to the specific facts discussed. Calculate the total seconds accurately from the timestamp.
+Format each question and answer pair exactly as:
+**Q:** [Question]
+**A:** 
+[Concise Answer, 1-2 sentences maximum] (Reference: [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS))
+
+Do NOT output verbose labels like "The question itself", "What a strong answer should cover", or difficulty ratings. Keep it strictly to the **Q:** and **A:** structure with clickable references, where the answer starts on the next line after **A:**. Keep answers short and direct (1-2 sentences); users can use the chat interface if they want more depth. Do NOT output plain text timestamps.
 
 Strict Grounding Rules:
 - Rely strictly and only on the information explicitly stated by the speaker in the provided video transcript.
