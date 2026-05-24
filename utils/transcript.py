@@ -36,7 +36,7 @@ def get_transcript(url: str) -> tuple[str, str, list[dict]]:
             
         ytt = YouTubeTranscriptApi(http_client=session)
         fetched = ytt.fetch(video_id)
-        full_text = " ".join([entry['text'] if isinstance(entry, dict) else entry.text for entry in fetched])
+        full_text = " ".join([entry.text if hasattr(entry, 'text') else entry['text'] for entry in fetched])
         return full_text, video_id, fetched
     except TranscriptsDisabled:
         raise ValueError("This video has transcripts disabled.")

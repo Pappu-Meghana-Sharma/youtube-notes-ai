@@ -1,12 +1,14 @@
 import os
 from google import genai
 from dotenv import load_dotenv
+from functools import lru_cache
 
 load_dotenv(override=True)
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 MODEL = "gemini-2.5-flash"
 
+@lru_cache(maxsize=128)
 def _generate(prompt: str) -> str:
     response = client.models.generate_content(
         model=MODEL,
@@ -108,11 +110,12 @@ Adapt the questions and answers based on the style of the lecture:
    - Generate realistic FAANG-style conceptual or technical questions that an interviewer could actually ask a candidate about the topic (e.g., trade-offs, optimizations, edge cases). Do NOT ask trivial recall questions like "list 5 types of algorithms".
    - The answer (**A:**) should outline what a strong answer must cover (using concise bullet points of the key technical points).
 
-Format each question and answer pair exactly as:
+Format each question and answer pair exactly as (including a blank line between the Q and A lines):
 **Q:** [Question]
+
 **A:** [Answer text or key bullet points of what a strong answer must cover] (Reference: [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS))
 
-Do NOT output verbose labels like "The question itself", "What a strong answer should cover", or difficulty ratings. Keep it strictly to the **Q:** and **A:** structure with clickable references, where **A:** starts on a new line after the question. Do NOT output plain text timestamps.
+Do NOT output verbose labels like "The question itself", "What a strong answer should cover", or difficulty ratings. Keep it strictly to the **Q:** and **A:** structure with clickable references, separated by a blank line so that they render on different lines in the UI. Do NOT output plain text timestamps.
 
 Strict Grounding Rules:
 - Rely strictly and only on the information explicitly stated by the speaker in the provided video transcript.
@@ -124,7 +127,8 @@ Transcript:
 """
     return _generate(prompt)
 
-def generate_chat_response(prompt: str, chat_history: list, timestamped_transcript: str, video_id: str) -> str:
+@lru_cache(maxsize=128)
+def _generate_chat_response_cached(prompt: str, chat_history_tuple: tuple, timestamped_transcript: str, video_id: str) -> str:
     system_instruction = f"""
 You are an expert learning assistant for LectureLens. Your job is to answer questions about the video lecture provided.
 You are given the full transcript of the video with timestamps. 
@@ -147,10 +151,10 @@ Timestamped Transcript:
 """
 
     contents = []
-    for msg in chat_history:
+    for role, content in chat_history_tuple:
         contents.append({
-            "role": "user" if msg["role"] == "user" else "model",
-            "parts": [{"text": msg["content"]}]
+            "role": "user" if role == "user" else "model",
+            "parts": [{"text": content}]
         })
         
     contents.append({
@@ -166,3 +170,8 @@ Timestamped Transcript:
         }
     )
     return response.text
+
+def generate_chat_response(prompt: str, chat_history: list, timestamped_transcript: str, video_id: str) -> str:
+    # Convert chat_history list of dicts to tuple of tuples to make it hashable for lru_cache
+    chat_history_tuple = tuple((msg["role"], msg["content"]) for msg in chat_history)
+    return _generate_chat_response_cached(prompt, chat_history_tuple, timestamped_transcript, video_id)
