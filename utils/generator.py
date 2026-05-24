@@ -99,16 +99,20 @@ def generate_interview_questions(transcript: str, video_id: str) -> str:
     prompt = f"""
 You are an interviewer/tutor for LectureLens. Based on the timestamped lecture transcript below, generate exactly 5 interview preparation questions and answers.
 
-Adapt the questions based on the style of the lecture:
-1. If the video is advice-oriented (e.g., how to prepare, study tips, coding grind advice), generate questions focusing on "how to apply these practices to crack technical/FAANG interviews".
-2. If the video is technically or knowledge-oriented (e.g., algorithms, system design, coding concepts), generate conceptual or technical questions about the topics explained in the video.
+Adapt the questions and answers based on the style of the lecture:
+1. If the video is advice-oriented (e.g., how to prepare, study tips, coding grind advice):
+   - Generate questions focusing on "how to apply these practices to crack technical/FAANG interviews".
+   - The answer (**A:**) should be a concise advice summary (1-2 sentences).
+
+2. If the video is technically or knowledge-oriented (e.g., algorithms, system design, coding concepts):
+   - Generate realistic FAANG-style conceptual or technical questions that an interviewer could actually ask a candidate about the topic (e.g., trade-offs, optimizations, edge cases). Do NOT ask trivial recall questions like "list 5 types of algorithms".
+   - The answer (**A:**) should outline what a strong answer must cover (using concise bullet points of the key technical points).
 
 Format each question and answer pair exactly as:
 **Q:** [Question]
-**A:** 
-[Concise Answer, 1-2 sentences maximum] (Reference: [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS))
+**A:** [Answer text or key bullet points of what a strong answer must cover] (Reference: [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS))
 
-Do NOT output verbose labels like "The question itself", "What a strong answer should cover", or difficulty ratings. Keep it strictly to the **Q:** and **A:** structure with clickable references, where the answer starts on the next line after **A:**. Keep answers short and direct (1-2 sentences); users can use the chat interface if they want more depth. Do NOT output plain text timestamps.
+Do NOT output verbose labels like "The question itself", "What a strong answer should cover", or difficulty ratings. Keep it strictly to the **Q:** and **A:** structure with clickable references, where **A:** starts on a new line after the question. Do NOT output plain text timestamps.
 
 Strict Grounding Rules:
 - Rely strictly and only on the information explicitly stated by the speaker in the provided video transcript.
