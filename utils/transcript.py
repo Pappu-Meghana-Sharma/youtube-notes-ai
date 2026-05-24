@@ -1,3 +1,5 @@
+import os
+import requests
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 import re
@@ -17,7 +19,22 @@ def extract_video_id(url: str) -> str:
 def get_transcript(url: str) -> tuple[str, str, list[dict]]:
     video_id = extract_video_id(url)
     try:
-        ytt = YouTubeTranscriptApi()
+        session = requests.Session()
+        # Set a real browser User-Agent to bypass generic scraping bans
+        session.headers.update({
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9"
+        })
+        
+        # Set proxy if available in environment
+        proxy = os.getenv("YOUTUBE_PROXY")
+        if proxy:
+            session.proxies = {
+                "http": proxy,
+                "https": proxy
+            }
+            
+        ytt = YouTubeTranscriptApi(http_client=session)
         fetched = ytt.fetch(video_id)
         full_text = " ".join([entry['text'] if isinstance(entry, dict) else entry.text for entry in fetched])
         return full_text, video_id, fetched
