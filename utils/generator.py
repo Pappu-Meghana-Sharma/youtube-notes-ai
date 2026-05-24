@@ -39,7 +39,7 @@ You are a study assistant for LectureLens. From the timestamped transcript below
 
 Format each flashcard exactly like this:
 **Q:** [question]
-**A:** [detailed answer] (Reference: [MM:SS](https://youtu.be/{video_id}?t=SECONDS))
+**A:** [detailed answer] (Reference: You MUST provide the exact timestamp formatted as a clickable link using the format [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS). Do NOT output plain text timestamps. Example: [09:43](https://youtu.be/{video_id}?t=583))
 
 Focus on concrete facts, definitions, and specific techniques. Calculate the total seconds accurately from the timestamp.
 
@@ -63,7 +63,7 @@ Format each question exactly like this:
 - B) [option]
 - C) [option]
 - D) [option]
-**Answer:** [correct option] (Reference: [MM:SS](https://youtu.be/{video_id}?t=SECONDS))
+**Answer:** [correct option] (Reference: You MUST provide the exact timestamp formatted as a clickable link using the format [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS). Do NOT output plain text timestamps. Example: [09:43](https://youtu.be/{video_id}?t=583))
 
 Focus on testing concrete knowledge, techniques, or facts. Calculate the total seconds accurately from the timestamp.
 
@@ -82,7 +82,7 @@ def generate_summary(transcript: str, video_id: str) -> str:
 Summarize this lecture transcript in exactly 5 key bullet points for LectureLens.
 Each bullet point must cover an important technique, key fact, or insight from the video.
 Include a clickable timestamp link for each bullet point indicating where it occurs.
-The link format must be: [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS).
+The link format must be: You MUST provide the exact timestamp formatted as a clickable link using the format [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS). Do NOT output plain text timestamps. Example: [09:43](https://youtu.be/{video_id}?t=583).
 Calculate the total seconds accurately from the timestamp.
 
 Strict Grounding Rules:
@@ -103,7 +103,7 @@ For each question include:
 - The question itself
 - What a strong answer should cover (2-3 bullet points)
 - Difficulty: Easy / Medium / Hard
-- Lecture Reference: [MM:SS](https://youtu.be/{video_id}?t=SECONDS)
+- Lecture Reference: You MUST provide the exact timestamp formatted as a clickable link using the format [MM:SS](https://youtu.be/{video_id}?t=SECONDS) or [HH:MM:SS](https://youtu.be/{video_id}?t=SECONDS). Do NOT output plain text timestamps. Every reference must be a link. Example: [09:43](https://youtu.be/{video_id}?t=583)
 
 Format cleanly with markdown. Ensure questions are technically deep and directly tied to the specific facts discussed. Calculate the total seconds accurately from the timestamp.
 
