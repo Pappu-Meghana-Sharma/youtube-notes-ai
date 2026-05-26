@@ -1,5 +1,8 @@
 import os
+import time
+import requests
 from google import genai
+from google.genai import errors
 from dotenv import load_dotenv
 from functools import lru_cache
 
@@ -8,9 +11,117 @@ load_dotenv(override=True)
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 MODEL = "gemini-2.5-flash"
 
+def _generate_with_groq(prompt: str, system_instruction: str = None) -> str:
+    """
+    Fallback method to call Groq API (Llama 3) if Gemini is down.
+    Keeps dependencies lightweight by using requests directly.
+    """
+    groq_key = os.getenv("GROQ_API_KEY")
+    if not groq_key:
+        raise ValueError("Gemini API is unavailable and GROQ_API_KEY is not configured in .env")
+        
+    headers = {
+        "Authorization": f"Bearer {groq_key}",
+        "Content-Type": "application/json"
+    }
+    
+    messages = []
+    if system_instruction:
+        messages.append({"role": "system", "content": system_instruction})
+    messages.append({"role": "user", "content": prompt})
+    
+    payload = {
+        "model": "llama-3.3-70b-versatile",
+        "messages": messages,
+        "temperature": 0.2
+    }
+    
+    response = requests.post(
+        "https://api.groq.com/openai/v1/chat/completions",
+        headers=headers,
+        json=payload,
+        timeout=30
+    )
+    response.raise_for_status()
+    return response.json()["choices"][0]["message"]["content"]
+
+
+def _call_with_retry_and_fallback(func, *args, **kwargs):
+    """
+    Tries primary Gemini models with exponential backoff.
+    If all Gemini attempts fail, automatically falls back to Groq (Llama 3).
+    """
+    gemini_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+    max_retries = 3
+    initial_backoff = 1.0
+    backoff_factor = 2.0
+    
+    last_error = None
+    
+    for model in gemini_models:
+        if "model" in kwargs:
+            kwargs["model"] = model
+            
+        backoff = initial_backoff
+        for attempt in range(1, max_retries + 1):
+            try:
+                return func(*args, **kwargs)
+            except errors.APIError as e:
+                last_error = e
+                err_msg = str(e).lower()
+                is_retriable = (
+                    e.code in [429, 500, 503] or
+                    "high demand" in err_msg or
+                    "unavailable" in err_msg or
+                    "limit" in err_msg or
+                    "exhausted" in err_msg
+                )
+                if not is_retriable:
+                    raise e
+                
+                if attempt == max_retries:
+                    break
+                time.sleep(backoff)
+                backoff *= backoff_factor
+            except Exception as e:
+                last_error = e
+                if attempt == max_retries:
+                    break
+                time.sleep(backoff)
+                backoff *= backoff_factor
+
+    # Fallback to Groq
+    try:
+        prompt = kwargs.get("contents")
+        if not prompt and len(args) > 0:
+            prompt = args[0]
+            
+        system_instruction = kwargs.get("config", {}).get("system_instruction")
+        
+        if isinstance(prompt, list):
+            formatted_prompt = ""
+            for turn in prompt:
+                role = "User" if turn.get("role") == "user" else "Assistant"
+                parts = turn.get("parts", [{}])
+                text = parts[0].get("text", "") if parts else ""
+                formatted_prompt += f"\n{role}: {text}"
+            prompt = formatted_prompt.strip()
+
+        if isinstance(prompt, str) and prompt:
+            groq_response = _generate_with_groq(prompt, system_instruction)
+            return type('Response', (), {'text': groq_response})()
+    except Exception as groq_err:
+        raise Exception(f"Gemini error: {last_error}. Groq fallback error: {groq_err}")
+
+    if last_error:
+        raise last_error
+    raise Exception("API call failed with unknown error.")
+
+
 @lru_cache(maxsize=128)
 def _generate(prompt: str) -> str:
-    response = client.models.generate_content(
+    response = _call_with_retry_and_fallback(
+        client.models.generate_content,
         model=MODEL,
         contents=prompt
     )
@@ -162,7 +273,8 @@ Timestamped Transcript:
         "parts": [{"text": prompt}]
     })
     
-    response = client.models.generate_content(
+    response = _call_with_retry_and_fallback(
+        client.models.generate_content,
         model=MODEL,
         contents=contents,
         config={

@@ -432,19 +432,23 @@ if generate_btn and url:
     ts_transcript = format_transcript_with_timestamps(raw_transcript)
     results = {}
     progress = st.progress(0, text="Generating summary...")
-    results["summary"] = generate_summary(ts_transcript, video_id)
-    progress.progress(50, text="Writing notes...")
-    results["notes"] = generate_notes(transcript, video_id)
-    results["flashcards"] = None
-    results["quiz"] = None
-    results["interview"] = None
-    progress.progress(100, text="Done!")
-    st.session_state.results = results
-    st.session_state.quiz_answers = {}
-    st.session_state.quiz_submitted = False
-    st.session_state.chat_history = []
-    st.session_state.active_tab = "Notes"
-    st.rerun()
+    try:
+        results["summary"] = generate_summary(ts_transcript, video_id)
+        progress.progress(50, text="Writing notes...")
+        results["notes"] = generate_notes(transcript, video_id)
+        results["flashcards"] = None
+        results["quiz"] = None
+        results["interview"] = None
+        progress.progress(100, text="Done!")
+        st.session_state.results = results
+        st.session_state.quiz_answers = {}
+        st.session_state.quiz_submitted = False
+        st.session_state.chat_history = []
+        st.session_state.active_tab = "Notes"
+        st.rerun()
+    except Exception as e:
+        progress.empty()
+        st.error(f"⚠️ Generation Error: {str(e)}")
 
 elif generate_btn and not url:
     st.warning("Please paste a YouTube URL first.")
