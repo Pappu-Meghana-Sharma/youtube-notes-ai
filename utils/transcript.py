@@ -65,7 +65,7 @@ def _fetch_direct(video_id: str) -> tuple[str, list]:
 def get_transcript(url: str) -> tuple[str, str, list]:
     video_id = extract_video_id(url)
 
-    # Try direct first (works locally)
+    # Direct first (works locally)
     # Then Supadata (best for cloud, 100 free/month)
     # Then WebShare (proxy fallback)
     attempts = [
@@ -80,7 +80,6 @@ def get_transcript(url: str) -> tuple[str, str, list]:
             full_text, fetched = fetch_fn(video_id)
             return full_text, video_id, fetched
         except (TranscriptsDisabled, NoTranscriptFound) as e:
-            # These are definitive — no point trying other methods
             raise ValueError(str(e))
         except Exception as e:
             last_error = e
