@@ -1,8 +1,12 @@
 import os
+import re
 import requests
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
-import re
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def extract_video_id(url: str) -> str:
     patterns = [
@@ -16,34 +20,75 @@ def extract_video_id(url: str) -> str:
             return match.group(1)
     raise ValueError("Could not extract video ID. Check the URL.")
 
-def get_transcript(url: str) -> tuple[str, str, list[dict]]:
+def _fetch_via_supadata(video_id: str) -> tuple[str, list]:
+    api_key = os.getenv("SUPADATA_API_KEY")
+    if not api_key:
+        raise ValueError("No Supadata key")
+    response = requests.get(
+        "https://api.supadata.ai/v1/youtube/transcript",
+        params={"videoId": video_id, "text": True},
+        headers={"x-api-key": api_key},
+        timeout=15
+    )
+    data = response.json()
+    if "error" in data or "content" not in data:
+        raise ValueError(f"Supadata error: {data}")
+    return data["content"], []
+
+def _fetch_via_webshare(video_id: str) -> tuple[str, list]:
+    username = os.getenv("WEBSHARE_USERNAME")
+    password = os.getenv("WEBSHARE_PASSWORD")
+    if not username or not password:
+        raise ValueError("No WebShare credentials")
+    ytt = YouTubeTranscriptApi(
+        proxy_config=WebshareProxyConfig(
+            proxy_username=username,
+            proxy_password=password,
+        )
+    )
+    fetched = ytt.fetch(video_id)
+    full_text = " ".join([
+        entry.text if hasattr(entry, 'text') else entry['text']
+        for entry in fetched
+    ])
+    return full_text, fetched
+
+def _fetch_direct(video_id: str) -> tuple[str, list]:
+    ytt = YouTubeTranscriptApi()
+    fetched = ytt.fetch(video_id)
+    full_text = " ".join([
+        entry.text if hasattr(entry, 'text') else entry['text']
+        for entry in fetched
+    ])
+    return full_text, fetched
+
+def get_transcript(url: str) -> tuple[str, str, list]:
     video_id = extract_video_id(url)
-    try:
-        session = requests.Session()
-        # Set a real browser User-Agent to bypass generic scraping bans
-        session.headers.update({
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Accept-Language": "en-US,en;q=0.9"
-        })
-        
-        # Set proxy if available in environment
-        proxy = os.getenv("YOUTUBE_PROXY")
-        if proxy:
-            session.proxies = {
-                "http": proxy,
-                "https": proxy
-            }
-            
-        ytt = YouTubeTranscriptApi(http_client=session)
-        fetched = ytt.fetch(video_id)
-        full_text = " ".join([entry.text if hasattr(entry, 'text') else entry['text'] for entry in fetched])
-        return full_text, video_id, fetched
-    except TranscriptsDisabled:
-        raise ValueError("This video has transcripts disabled.")
-    except NoTranscriptFound:
-        raise ValueError("No transcript found for this video.")
-    except Exception as e:
-        raise ValueError(f"Could not fetch transcript: {str(e)}")
+
+    # Try direct first (works locally)
+    # Then Supadata (best for cloud, 100 free/month)
+    # Then WebShare (proxy fallback)
+    attempts = [
+        ("direct", _fetch_direct),
+        ("supadata", _fetch_via_supadata),
+        ("webshare", _fetch_via_webshare),
+    ]
+
+    last_error = None
+    for name, fetch_fn in attempts:
+        try:
+            full_text, fetched = fetch_fn(video_id)
+            return full_text, video_id, fetched
+        except (TranscriptsDisabled, NoTranscriptFound) as e:
+            # These are definitive — no point trying other methods
+            raise ValueError(str(e))
+        except Exception as e:
+            last_error = e
+            continue
+
+    raise ValueError(
+        f"Could not fetch transcript after all attempts. Last error: {str(last_error)}"
+    )
 
 def chunk_transcript(text: str, chunk_size: int = 3000) -> list[str]:
     words = text.split()
